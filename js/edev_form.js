@@ -1,6 +1,6 @@
 var zeroTime = 0;
-var allStrokeData = [];
 var data = null;
+var allStrokeData = [];
 
 function InputData(name) {
     this.name = name;
@@ -11,33 +11,35 @@ function InputData(name) {
 }
 
 function onInputFocus(event) {
-    console.log('FOCUS on element: ' + event.srcElement.name);
     data = new InputData(event.srcElement.name);
     zeroTime = new Date().getTime();
 }
 
 function onInputBlur(event) {
-    console.log('BLUR on element: ' + event.srcElement.name);
     allStrokeData.push(data);
     data = null;
 }
 
 function onKeyDown(event) {
-    console.log('Naciśnięty klawisz: ' + event.key + ' w elemencie: ' + event.srcElement.name);
     var keyDownTime = new Date().getTime();
     var timeInterval = keyDownTime - zeroTime;
-    console.log('Czas w milisekundach: ' + timeInterval)
     data.addStrokeTime(timeInterval);
     zeroTime = keyDownTime;
 }
 
 function onSubmit(event) {
     event.preventDefault();
-    console.log(allStrokeData);
-}
 
-var form = document.getElementById('webForm');
-form.addEventListener('keydown', onKeyDown);
+    for (i = 0; i < allStrokeData.length; i++) {
+        $inputName = allStrokeData[i].name;
+        $timeData = allStrokeData[i].times;
+
+        var pElement = document.createElement('p');
+        pElement.innerHTML = 'Dla pola o nazwie: <b>' + $inputName + '</b><br/>' +
+            'mamy takie czasy (w milisekundach): ' + $timeData;
+        document.getElementById('info').appendChild(pElement);
+    }
+}
 
 var inputs = $(':input:not(:last)').on('focus', function () {
     onInputFocus(event);
@@ -45,6 +47,16 @@ var inputs = $(':input:not(:last)').on('focus', function () {
 inputs.on('blur', function () {
     onInputBlur(event);
 });
-
-var submit = document.getElementById('submit');
-submit.addEventListener('click', onSubmit);
+$('#webForm').on('keydown', function () {
+    onKeyDown(event);
+});
+$('#submit').on('click', function () {
+    onSubmit(event);
+});
+$('#reset').on('click', function () {
+    $('#info').empty();
+    $(':input').filter(function (t) {
+        return $(this).attr('type') === 'text'
+    }).val('');
+    allStrokeData = [];
+});

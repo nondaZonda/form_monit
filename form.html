@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <title>Form</title>
 </head>
-<body>
-    <form id="webForm" action="form_input.php">
-        First name: <br/>
+<body style="margin: 10px;">
+    <form id="webForm" action="form_input.php" method="post">
+        Imię: <br/>
         <input id="fname" type="text" name="firstname">
         <br/>
-        Last name: <br/>
+        Nazwisko: <br/>
         <input id="lname" type="text" name="lastname" >
         <br/>
         <br/>
-        <input type="submit" id="submit" value="Wyślij">
+        <input type="submit" id="submit" value="Sprawdź czasy" style="color: green; font-weight: bold">
+        <input type="button" id="reset" value="Od nowa" style="color: orangered; font-weight: bold">
     </form>
+    <div id="info"></div>
 </body>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/edev_form.js"></script>
